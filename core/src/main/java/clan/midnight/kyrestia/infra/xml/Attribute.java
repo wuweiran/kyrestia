@@ -35,6 +35,7 @@ public class Attribute {
 
     @Override
     public String toString() {
-        return key.toString() + "=" + "\"" + value + "\"";
+        return (key.getPrefix() != null ? (key.getPrefix() + ":") : "") + key.getLocalPart()
+                + "=\"" + value + "\"";
     }
 }

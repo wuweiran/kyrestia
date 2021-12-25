@@ -64,4 +64,29 @@ public class Element {
     public List<Element> getChildElement() {
         return childElementList == null ? Collections.emptyList() : Collections.unmodifiableList(childElementList);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        String typeString = (type.getPrefix() != null ? (type.getPrefix() + ":") : "") + type.getLocalPart();
+        sb.append("<").append(typeString);
+
+        if (attributeList != null) {
+            for (Attribute attribute : attributeList) {
+                sb.append(" ").append(attribute.toString());
+            }
+        }
+
+        if (childElementList.isEmpty()) {
+            sb.append("/>");
+        } else {
+            sb.append(">");
+            for (Element childElement : childElementList) {
+                sb.append(childElement);
+            }
+            sb.append("</").append(typeString).append(">");
+        }
+
+        return sb.toString();
+    }
 }
