@@ -11,18 +11,18 @@ public abstract class AbstractExecution implements Execution {
 
     protected final AbstractExecutionPoint mainEp;
 
-    protected volatile SnapshotExecutionPoint ssMainEp;
-
     protected volatile Status status;
+
+    protected volatile SnapshotExecutionPoint ssMainEp;
+    protected volatile boolean atSafePoint;
 
     protected AbstractExecution(Process process) {
         this.process = process;
-        this.mainEp = createMainExecutionPoint();
-        this.ssMainEp = SnapshotExecutionPoint.snapshot(this);
+        this.mainEp = newMainExecutionPoint();
         this.status = Status.NEW;
     }
 
-    protected abstract AbstractExecutionPoint createMainExecutionPoint();
+    protected abstract AbstractExecutionPoint newMainExecutionPoint();
 
     @Override
     public Process getProcess() {
@@ -31,12 +31,17 @@ public abstract class AbstractExecution implements Execution {
 
     @Override
     public Collection<ExecutionPoint> getExecutionPoints() {
+        if (!atSafePoint) return getExecutionPoints(ssMainEp);
         ssMainEp = SnapshotExecutionPoint.snapshot(this);
-        if (ssMainEp.getSubExecutionPoints().isEmpty()) return Collections.singletonList(ssMainEp);
+        return getExecutionPoints(ssMainEp);
+    }
+
+    private Collection<ExecutionPoint> getExecutionPoints(ExecutionPoint rootEp) {
+        if (rootEp.getSubExecutionPoints().isEmpty()) return Collections.singletonList(rootEp);
 
         ArrayList<ExecutionPoint> res = new ArrayList<>();
         Queue<ExecutionPoint> q = new LinkedList<>();
-        q.offer(ssMainEp);
+        q.offer(rootEp);
         while (!q.isEmpty()) {
             ExecutionPoint cur = q.poll();
             for (ExecutionPoint ep : cur.getSubExecutionPoints()) q.offer(ep);
@@ -71,8 +76,9 @@ public abstract class AbstractExecution implements Execution {
         }
 
         ssMainEp = SnapshotExecutionPoint.snapshot(this);
+        atSafePoint = false;
         mainEp.signal(event);
-        ssMainEp = SnapshotExecutionPoint.snapshot(this);
+        atSafePoint = true;
     }
 
     @Override

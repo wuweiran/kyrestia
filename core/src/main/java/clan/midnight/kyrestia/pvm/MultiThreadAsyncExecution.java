@@ -10,7 +10,7 @@ public class MultiThreadAsyncExecution extends AbstractExecution {
     }
 
     @Override
-    protected AbstractExecutionPoint createMainExecutionPoint() {
+    protected AbstractExecutionPoint newMainExecutionPoint() {
         return new MultiThreadASyncExecutionPoint(this);
     }
 

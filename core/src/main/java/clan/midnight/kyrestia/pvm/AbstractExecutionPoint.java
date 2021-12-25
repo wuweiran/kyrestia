@@ -56,10 +56,6 @@ public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
                 null, false);
     }
 
-    boolean hasSub() {
-        return rc.subEps != null && !rc.subEps.isEmpty();
-    }
-
     Collection<AbstractExecutionPoint> getSubEps() {
         return rc.subEps == null ? Collections.emptyList() : rc.subEps;
     }

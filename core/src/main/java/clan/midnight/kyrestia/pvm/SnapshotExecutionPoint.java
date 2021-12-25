@@ -25,16 +25,17 @@ public class SnapshotExecutionPoint implements ExecutionPoint {
     private SnapshotExecutionPoint(ExecutionPoint supEp, AbstractExecutionPoint ep) {
         this.execution = ep.execution;
         this.supEp = supEp;
-        this.localContext = ep.rc.localContext;
-        this.status = ep.rc.status;
-        this.currentNode = ep.rc.currentNode;
-        this.currentNodeStage = ep.rc.currentNodeStage;
-        this.waitEvent = ep.rc.waitEvent;
-        this.waitBereaved = ep.rc.waitBereaved;
-        if (ep.getSubEps().isEmpty()) this.subEps = Collections.emptyList();
+        AbstractExecutionPoint.MetaContainer rc = ep.rc;
+        this.localContext = rc.localContext;
+        this.status = rc.status;
+        this.currentNode = rc.currentNode;
+        this.currentNodeStage = rc.currentNodeStage;
+        this.waitEvent = rc.waitEvent;
+        this.waitBereaved = rc.waitBereaved;
+        if (rc.subEps == null || rc.subEps.isEmpty()) this.subEps = Collections.emptyList();
         else {
             this.subEps = new ArrayList<>();
-            ep.getSubEps().forEach(subEp -> this.subEps.add(new SnapshotExecutionPoint(this, subEp)));
+            rc.subEps.forEach(subEp -> this.subEps.add(new SnapshotExecutionPoint(this, subEp)));
         }
     }
 

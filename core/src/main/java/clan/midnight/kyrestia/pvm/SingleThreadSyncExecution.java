@@ -9,7 +9,7 @@ public class SingleThreadSyncExecution extends AbstractExecution {
     }
 
     @Override
-    protected AbstractExecutionPoint createMainExecutionPoint() {
+    protected AbstractExecutionPoint newMainExecutionPoint() {
         return new SingleThreadSyncExecutionPoint(this);
     }
 
