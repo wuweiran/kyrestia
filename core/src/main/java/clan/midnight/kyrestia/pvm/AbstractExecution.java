@@ -6,23 +6,23 @@ import clan.midnight.kyrestia.model.Process;
 
 import java.util.*;
 
-public abstract class PvmExecution implements Execution {
+public abstract class AbstractExecution implements Execution {
     protected final Process process;
 
-    protected final PvmExecutionPoint mainEp;
+    protected final AbstractExecutionPoint mainEp;
 
-    protected volatile PvmExecutionPointView ssMainEp;
+    protected volatile SnapshotExecutionPoint ssMainEp;
 
     protected volatile Status status;
 
-    protected PvmExecution(Process process) {
+    protected AbstractExecution(Process process) {
         this.process = process;
         this.mainEp = createMainExecutionPoint();
-        this.ssMainEp = PvmExecutionPointView.snapshot(this);
+        this.ssMainEp = SnapshotExecutionPoint.snapshot(this);
         this.status = Status.NEW;
     }
 
-    protected abstract PvmExecutionPoint createMainExecutionPoint();
+    protected abstract AbstractExecutionPoint createMainExecutionPoint();
 
     @Override
     public Process getProcess() {
@@ -31,7 +31,7 @@ public abstract class PvmExecution implements Execution {
 
     @Override
     public Collection<ExecutionPoint> getExecutionPoints() {
-        ssMainEp = PvmExecutionPointView.snapshot(this);
+        ssMainEp = SnapshotExecutionPoint.snapshot(this);
         if (ssMainEp.getSubExecutionPoints().isEmpty()) return Collections.singletonList(ssMainEp);
 
         ArrayList<ExecutionPoint> res = new ArrayList<>();
@@ -70,9 +70,9 @@ public abstract class PvmExecution implements Execution {
             throw new IllegalStateException("[PVM] Trying to signal execution of a wrong status: " + status);
         }
 
-        ssMainEp = PvmExecutionPointView.snapshot(this);
+        ssMainEp = SnapshotExecutionPoint.snapshot(this);
         mainEp.signal(event);
-        ssMainEp = PvmExecutionPointView.snapshot(this);
+        ssMainEp = SnapshotExecutionPoint.snapshot(this);
     }
 
     @Override

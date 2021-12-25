@@ -7,7 +7,7 @@ import clan.midnight.kyrestia.model.Node;
 import java.io.Serializable;
 import java.util.*;
 
-public class PvmExecutionPointView implements ExecutionPoint {
+public class SnapshotExecutionPoint implements ExecutionPoint {
     private final Execution execution;
     private final ExecutionPoint supEp;
     private final List<ExecutionPoint> subEps;
@@ -18,11 +18,11 @@ public class PvmExecutionPointView implements ExecutionPoint {
     private final String waitEvent;
     private final boolean waitBereaved;
 
-    static PvmExecutionPointView snapshot(PvmExecution execution) {
-        return new PvmExecutionPointView(null, execution.mainEp);
+    static SnapshotExecutionPoint snapshot(AbstractExecution execution) {
+        return new SnapshotExecutionPoint(null, execution.mainEp);
     }
 
-    private PvmExecutionPointView(ExecutionPoint supEp, PvmExecutionPoint ep) {
+    private SnapshotExecutionPoint(ExecutionPoint supEp, AbstractExecutionPoint ep) {
         this.execution = ep.execution;
         this.supEp = supEp;
         this.localContext = ep.rc.localContext;
@@ -34,7 +34,7 @@ public class PvmExecutionPointView implements ExecutionPoint {
         if (ep.getSubEps().isEmpty()) this.subEps = Collections.emptyList();
         else {
             this.subEps = new ArrayList<>();
-            ep.getSubEps().forEach(subEp -> this.subEps.add(new PvmExecutionPointView(this, subEp)));
+            ep.getSubEps().forEach(subEp -> this.subEps.add(new SnapshotExecutionPoint(this, subEp)));
         }
     }
 

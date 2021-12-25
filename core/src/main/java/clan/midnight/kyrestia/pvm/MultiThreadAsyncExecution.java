@@ -3,30 +3,30 @@ package clan.midnight.kyrestia.pvm;
 import clan.midnight.kyrestia.model.Node;
 import clan.midnight.kyrestia.model.Process;
 
-public class MultiThreadAsyncExecution extends PvmExecution {
+public class MultiThreadAsyncExecution extends AbstractExecution {
 
     public MultiThreadAsyncExecution(Process process) {
         super(process);
     }
 
     @Override
-    protected PvmExecutionPoint createMainExecutionPoint() {
+    protected AbstractExecutionPoint createMainExecutionPoint() {
         return new MultiThreadASyncExecutionPoint(this);
     }
 
-    public static class MultiThreadASyncExecutionPoint extends PvmExecutionPoint {
+    public static class MultiThreadASyncExecutionPoint extends AbstractExecutionPoint {
         private volatile Thread t;
 
-        MultiThreadASyncExecutionPoint(PvmExecution execution) {
+        MultiThreadASyncExecutionPoint(AbstractExecution execution) {
             super(execution);
         }
 
-        MultiThreadASyncExecutionPoint(PvmExecutionPoint supEp, Node node) {
+        MultiThreadASyncExecutionPoint(AbstractExecutionPoint supEp, Node node) {
             super(supEp, node);
         }
 
         @Override
-        PvmExecutionPoint newSubExecutionPoint(Node node) {
+        AbstractExecutionPoint newSubExecutionPoint(Node node) {
             return new MultiThreadASyncExecutionPoint(this, node);
         }
 

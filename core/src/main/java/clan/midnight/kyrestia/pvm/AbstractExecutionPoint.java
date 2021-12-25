@@ -8,14 +8,14 @@ import clan.midnight.kyrestia.model.Node;
 import java.io.Serializable;
 import java.util.*;
 
-public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
-    protected final PvmExecution execution;
-    protected final PvmExecutionPoint supEp;
+public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
+    protected final AbstractExecution execution;
+    protected final AbstractExecutionPoint supEp;
     protected volatile MetaContainer rc;
     protected volatile MetaContainer uc;
 
     static class MetaContainer {
-        ArrayList<PvmExecutionPoint> subEps;
+        ArrayList<AbstractExecutionPoint> subEps;
         Map<String, Serializable> localContext;
         ExecutionPoint.Status status;
         Node currentNode;
@@ -23,7 +23,7 @@ public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
         String waitEvent;
         boolean waitBereaved;
 
-        MetaContainer(List<PvmExecutionPoint> subEps, Map<String, Serializable> localContext,
+        MetaContainer(List<AbstractExecutionPoint> subEps, Map<String, Serializable> localContext,
                       ExecutionPoint.Status status, Node currentNode, ExecutionPoint.NodeStage currentNodeStage,
                       String waitEvent, boolean waitBereaved) {
             this.subEps = subEps == null ? null : new ArrayList<>(subEps);
@@ -40,7 +40,7 @@ public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
         }
     }
 
-    protected PvmExecutionPoint(PvmExecution execution) {
+    protected AbstractExecutionPoint(AbstractExecution execution) {
         this.execution = execution;
         this.supEp = null;
         this.rc = new MetaContainer(null, null, ExecutionPoint.Status.RUNNABLE,
@@ -48,7 +48,7 @@ public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
                 null, false);
     }
 
-    protected PvmExecutionPoint(PvmExecutionPoint supEp, Node node) {
+    protected AbstractExecutionPoint(AbstractExecutionPoint supEp, Node node) {
         this.supEp = supEp;
         this.execution = supEp.execution;
         this.rc = new MetaContainer(null, null, ExecutionPoint.Status.RUNNABLE,
@@ -60,7 +60,7 @@ public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
         return rc.subEps != null && !rc.subEps.isEmpty();
     }
 
-    Collection<PvmExecutionPoint> getSubEps() {
+    Collection<AbstractExecutionPoint> getSubEps() {
         return rc.subEps == null ? Collections.emptyList() : rc.subEps;
     }
 
@@ -81,7 +81,7 @@ public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
 
     @Override
     public RuntimeExecutionPoint newExecutionPointOn(Node node) {
-        PvmExecutionPoint newSubEp = newSubExecutionPoint(node);
+        AbstractExecutionPoint newSubEp = newSubExecutionPoint(node);
         if (uc.subEps == null) uc.subEps = new ArrayList<>();
         uc.subEps.add(newSubEp);
         return newSubEp;
@@ -126,7 +126,7 @@ public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
             rc = uc;
             uc = null;
             if (newNodeAdded) {
-                for (PvmExecutionPoint subEp : getSubEps()) subEp.drive();
+                for (AbstractExecutionPoint subEp : getSubEps()) subEp.drive();
             }
         }
 
@@ -136,7 +136,7 @@ public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
     void tryPopTermination() {
         if (rc.status == ExecutionPoint.Status.TERMINATED) {
             boolean allTerminated = true;
-            for (PvmExecutionPoint subEp : getSubEps()) {
+            for (AbstractExecutionPoint subEp : getSubEps()) {
                 if (subEp.rc.status != ExecutionPoint.Status.TERMINATED) {
                     allTerminated = false;
                     break;
@@ -160,10 +160,10 @@ public abstract class PvmExecutionPoint implements RuntimeExecutionPoint {
             drive();
         }
 
-        for (PvmExecutionPoint subEp : getSubEps()) subEp.signal(event);
+        for (AbstractExecutionPoint subEp : getSubEps()) subEp.signal(event);
     }
 
-    abstract PvmExecutionPoint newSubExecutionPoint(Node node);
+    abstract AbstractExecutionPoint newSubExecutionPoint(Node node);
 
     abstract void drive();
 }
