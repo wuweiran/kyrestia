@@ -69,7 +69,7 @@ public class PvmExecutionPointView implements ExecutionPoint {
     }
 
     @Override
-    public Map<String, Serializable> getContextMap() {
+    public Map<String, Serializable> getLocalContext() {
         return localContext;
     }
 
@@ -79,7 +79,7 @@ public class PvmExecutionPointView implements ExecutionPoint {
     }
 
     @Override
-    public Boolean isWaitingBereaved() {
+    public boolean isWaitingBereaved() {
         return waitBereaved;
     }
 }

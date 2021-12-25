@@ -19,9 +19,9 @@ public interface ExecutionPoint {
 
     Collection<ExecutionPoint> getSubExecutionPoints();
 
-    Map<String, Serializable> getContextMap();
+    Map<String, Serializable> getLocalContext();
 
     String getWaitEvent();
 
-    Boolean isWaitingBereaved();
+    boolean isWaitingBereaved();
 }
