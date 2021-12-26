@@ -68,16 +68,14 @@ public class Element {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        String typeString = (type.getPrefix() != null ? (type.getPrefix() + ":") : "") + type.getLocalPart();
+        String typeString = ("".equals(type.getPrefix()) ? "" : (type.getPrefix() + ":")) + type.getLocalPart();
         sb.append("<").append(typeString);
 
-        if (attributeList != null) {
-            for (Attribute attribute : attributeList) {
-                sb.append(" ").append(attribute.toString());
-            }
+        for (Attribute attribute : attributeList) {
+            sb.append(" ").append(attribute.toString());
         }
 
-        if (childElementList.isEmpty()) {
+        if (childElementList == null || childElementList.isEmpty()) {
             sb.append("/>");
         } else {
             sb.append(">");
