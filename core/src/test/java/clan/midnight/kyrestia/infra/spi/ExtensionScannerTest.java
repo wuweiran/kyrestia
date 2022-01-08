@@ -14,7 +14,7 @@ class ExtensionScannerTest {
         assertNotNull(spi);
         assertTrue(spi instanceof HighPrioritySubSpi);
 
-        extensionScanner.clean();
+        extensionScanner.clear();
         spi = extensionScanner.getExtension("test", SuperSpi.class);
         assertNull(spi);
     }
