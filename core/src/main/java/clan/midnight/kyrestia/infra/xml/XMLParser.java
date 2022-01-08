@@ -38,23 +38,57 @@ public class XMLParser {
 
     private Element parseElement(XMLStreamReader reader) throws XMLStreamException {
         Element currentElement = new Element(reader);
-        while (nextElement(reader)) {
+        StringBuilder sb = new StringBuilder();
+        while (nextElement(reader, sb)) {
             Element childElement = parseElement(reader);
             currentElement.addChildElement(childElement);
+        }
+        if (sb.length() != 0) {
+            currentElement.setTextContent(sb.toString());
         }
         return  currentElement;
     }
 
     private boolean nextElement(XMLStreamReader reader) throws XMLStreamException {
         while (reader.hasNext()) {
-            int event = reader.next();
-            if (event == XMLStreamConstants.END_ELEMENT) {
+            int eventType = reader.next();
+            if (eventType == XMLStreamConstants.END_ELEMENT) {
                 return false;
-            } else if (event == XMLStreamConstants.START_ELEMENT) {
+            } else if (eventType == XMLStreamConstants.START_ELEMENT) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private boolean nextElement(XMLStreamReader reader, StringBuilder sb) throws XMLStreamException {
+        while (reader.hasNext()) {
+            int eventType = reader.next();
+            if (eventType == XMLStreamConstants.END_ELEMENT) {
+                return false;
+            } else if (eventType == XMLStreamConstants.START_ELEMENT) {
+                return true;
+            } else if (eventType == XMLStreamConstants.CHARACTERS
+                    || eventType == XMLStreamConstants.CDATA) {
+                String text = reader.getText();
+                if (!isBlank(text)) {
+                    sb.append(text);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isBlank(String text) {
+        int textLen = text.length();
+        for (int i = 0; i < textLen; i++) {
+            if (!Character.isWhitespace(text.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

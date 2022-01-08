@@ -11,6 +11,7 @@ import java.util.List;
 public class Element {
     private final QName type;
     private final ArrayList<Attribute> attributeList;
+    private String textContent;
     private ArrayList<Element> childElementList;
 
     Element(XMLStreamReader reader) {
@@ -41,6 +42,14 @@ public class Element {
         return null;
     }
 
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
+
+    public String getTextContent() {
+        return textContent;
+    }
+
     public String getAttributeValue(String key) {
         for (Attribute attribute : attributeList) {
             QName attributeKey = attribute.getKey();
@@ -68,19 +77,24 @@ public class Element {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        String typeString = ("".equals(type.getPrefix()) ? "" : (type.getPrefix() + ":")) + type.getLocalPart();
+        String typeString = XMLUtils.getQNameDisplay(type);
         sb.append("<").append(typeString);
 
         for (Attribute attribute : attributeList) {
             sb.append(" ").append(attribute.toString());
         }
 
-        if (childElementList == null || childElementList.isEmpty()) {
+        if ((childElementList == null || childElementList.isEmpty()) && textContent == null) {
             sb.append("/>");
         } else {
             sb.append(">");
-            for (Element childElement : childElementList) {
-                sb.append(childElement);
+            if (textContent != null) {
+                sb.append(textContent);
+            }
+            if (childElementList != null) {
+                for (Element childElement : childElementList) {
+                    sb.append(childElement);
+                }
             }
             sb.append("</").append(typeString).append(">");
         }

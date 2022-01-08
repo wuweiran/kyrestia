@@ -35,7 +35,6 @@ public class Attribute {
 
     @Override
     public String toString() {
-        return ("".equals(key.getPrefix()) ? "" : (key.getPrefix() + ":")) + key.getLocalPart()
-                + "=\"" + value + "\"";
+        return XMLUtils.getQNameDisplay(key) + "=\"" + value + "\"";
     }
 }
