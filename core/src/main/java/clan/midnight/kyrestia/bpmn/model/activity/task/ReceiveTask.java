@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @TypeBinding("bpmn:receiveTask")
 public class ReceiveTask extends IdBasedElement {
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT_REF, value = "bpmn:incoming")
-    private final ArrayList<SequenceFlow> incomingSequenceFlowList = new ArrayList<>(4);
+    private final ArrayList<SequenceFlow> incomingSequenceFlowList = new ArrayList<>(2);
 
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT_REF, value = "bpmn:outgoing")
     private final ArrayList<SequenceFlow> outGoingSequenceFlowList = new ArrayList<>(1);
