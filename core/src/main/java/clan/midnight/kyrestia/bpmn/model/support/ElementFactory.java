@@ -105,6 +105,8 @@ public class ElementFactory extends ElementRegistry {
                     case CHILD_ELEMENT:
                         resolveChildElements(value, field, element);
                         break;
+                    case ATTRIBUTE:
+                        resolveAttribute(value, field, element);
                     default: // do nothing
                 }
             }
@@ -165,6 +167,19 @@ public class ElementFactory extends ElementRegistry {
                     refCollection.add(refElement);
                 }
             }
+        }
+    }
+
+    private void resolveAttribute(String xmlAttributeKey, Field field, IdBasedElement element)
+            throws IllegalAccessException {
+        if (!String.class.equals(field.getType())) {
+            throw new IllegalStateException("[BPMN] XmlReference with ATTRIBUTE " +
+                    "should be annotated on a non-final String field");
+        }
+        Element xmlElement = getContextXmlElement(element.getId());
+        String xmlAttributeValue = xmlElement.getAttributeValue(xmlAttributeKey);
+        if (xmlAttributeValue != null) {
+            field.set(element, xmlAttributeValue);
         }
     }
 
