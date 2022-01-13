@@ -9,9 +9,9 @@ import java.util.List;
 @TypeBinding("bpmn:definitions")
 public class Definitions extends IdBasedElement {
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT, value = "bpmn:process")
-    private final ArrayList<Process> processList = new ArrayList<>(2);
+    private final ArrayList<BpmnProcess> processList = new ArrayList<>(2);
 
-    public List<Process> getProcesses() {
+    public List<BpmnProcess> getProcesses() {
         return processList;
     }
 }

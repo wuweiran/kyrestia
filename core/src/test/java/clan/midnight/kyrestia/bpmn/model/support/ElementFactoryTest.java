@@ -1,7 +1,7 @@
 package clan.midnight.kyrestia.bpmn.model.support;
 
 import clan.midnight.kyrestia.bpmn.model.Definitions;
-import clan.midnight.kyrestia.bpmn.model.Process;
+import clan.midnight.kyrestia.bpmn.model.BpmnProcess;
 import clan.midnight.kyrestia.bpmn.model.event.StartEvent;
 import clan.midnight.kyrestia.bpmn.model.flow.SequenceFlow;
 import clan.midnight.kyrestia.infra.xml.Element;
@@ -26,7 +26,7 @@ class ElementFactoryTest {
 
         assertFalse(definitions.getProcesses().isEmpty());
 
-        Process process = definitions.getProcesses().get(0);
+        BpmnProcess process = definitions.getProcesses().get(0);
 
         assertNotNull(process);
 

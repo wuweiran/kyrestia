@@ -6,11 +6,12 @@ import clan.midnight.kyrestia.bpmn.model.support.ElementInit;
 import clan.midnight.kyrestia.bpmn.model.support.XmlReference;
 import clan.midnight.kyrestia.infra.spi.TypeBinding;
 import clan.midnight.kyrestia.model.Node;
+import clan.midnight.kyrestia.model.Process;
 
 import java.util.ArrayList;
 
 @TypeBinding("bpmn:process")
-public class Process extends IdBasedElement implements clan.midnight.kyrestia.model.Process {
+public class BpmnProcess extends IdBasedElement implements Process {
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT, value = "bpmn:startEvent")
     private final ArrayList<StartEvent> startEventList = new ArrayList<>(1);
 
