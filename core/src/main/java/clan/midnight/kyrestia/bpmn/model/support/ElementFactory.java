@@ -119,9 +119,11 @@ public class ElementFactory extends ElementRegistry {
         }
         Element xmlElement = getContextXmlElement(element.getId());
         String refId = xmlElement.getAttributeValue(xmlAttributeKey);
-        Element refXmlElement = getContextXmlElement(refId);
-        IdBasedElement refElement = getElement(refXmlElement);
-        field.set(element, refElement);
+        if (refId != null) {
+            Element refXmlElement = getContextXmlElement(refId);
+            IdBasedElement refElement = getElement(refXmlElement);
+            field.set(element, refElement);
+        }
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
