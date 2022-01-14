@@ -24,7 +24,7 @@ public class ReceiveTask extends IdBasedElement implements Node {
     private Message message;
 
     @ElementInit
-    public void check() {
+    public void checkOutgoingUniqueness() {
         if (outGoingSequenceFlowList.size() != 1) {
             throw new ProcessDefinitionException("[BPMN] Receive task has more than one or zero " +
                     "outgoing sequence flow, id: " + getId());

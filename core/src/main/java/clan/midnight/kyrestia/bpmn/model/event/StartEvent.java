@@ -17,7 +17,7 @@ public class StartEvent extends IdBasedElement implements Node {
     private final ArrayList<SequenceFlow> outGoingSequenceFlowList = new ArrayList<>(1);
 
     @ElementInit
-    public void check() {
+    public void checkOutgoingUniqueness() {
         if (outGoingSequenceFlowList.size() != 1) {
             throw new ProcessDefinitionException("[BPMN] Start event has more than one or zero " +
                     "outgoing sequence flow, id: " + getId());

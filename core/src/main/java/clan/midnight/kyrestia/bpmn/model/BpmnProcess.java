@@ -16,7 +16,7 @@ public class BpmnProcess extends IdBasedElement implements Process {
     private final ArrayList<StartEvent> startEventList = new ArrayList<>(1);
 
     @ElementInit
-    public void check() {
+    public void checkStartEventUniqueness() {
         if (startEventList.size() != 1) {
             throw new ProcessDefinitionException("[BPMN] Process has more than one or zero start event, id: " + getId());
         }
