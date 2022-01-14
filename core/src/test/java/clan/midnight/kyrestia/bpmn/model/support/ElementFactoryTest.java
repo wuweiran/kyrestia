@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class ElementFactoryTest {
     @Test
-    void getElement() throws XMLParseException {
+    void testGetElement() throws XMLParseException {
         InputStream inputStream = Thread.currentThread().getContextClassLoader()
                 .getResourceAsStream("bpmn-element-factory.xml");
         Element processXmlElement = new XMLParser().parseFirstElement(inputStream);

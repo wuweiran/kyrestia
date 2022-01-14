@@ -21,7 +21,7 @@ class XMLParserTest {
     }
 
     @Test
-    void textParseTextContent() throws XMLParseException {
+    void testParseTextContent() throws XMLParseException {
         InputStream inputStream = Thread.currentThread().getContextClassLoader()
                 .getResourceAsStream("xml-parser-text-content.xml");
         Element processElement = new XMLParser().parseFirstElement(inputStream);
