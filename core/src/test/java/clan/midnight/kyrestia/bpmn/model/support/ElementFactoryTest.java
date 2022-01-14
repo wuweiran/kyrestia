@@ -1,7 +1,8 @@
 package clan.midnight.kyrestia.bpmn.model.support;
 
-import clan.midnight.kyrestia.bpmn.model.Definitions;
+import clan.midnight.kyrestia.bpmn.ProcessDefinitionException;
 import clan.midnight.kyrestia.bpmn.model.BpmnProcess;
+import clan.midnight.kyrestia.bpmn.model.Definitions;
 import clan.midnight.kyrestia.bpmn.model.event.StartEvent;
 import clan.midnight.kyrestia.bpmn.model.flow.SequenceFlow;
 import clan.midnight.kyrestia.infra.xml.Element;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class ElementFactoryTest {
     @Test
@@ -38,5 +38,16 @@ class ElementFactoryTest {
 
         assertSame(startEvent, firstTransition.getSourceElement());
         assertNotNull(firstTransition.getTargetElement());
+    }
+
+    @Test
+    void testGetElementWithIncorrectDefinition() throws XMLParseException {
+
+        InputStream inputStream = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("bpmn-element-factory-incorrect.xml");
+        Element processXmlElement = new XMLParser().parseFirstElement(inputStream);
+        ElementFactory elementFactory = new ElementFactory();
+
+        assertThrows(IllegalStateException.class, () -> elementFactory.getElement(processXmlElement));
     }
 }
