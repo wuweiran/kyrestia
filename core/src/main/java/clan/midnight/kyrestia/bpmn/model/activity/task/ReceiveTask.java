@@ -1,11 +1,14 @@
 package clan.midnight.kyrestia.bpmn.model.activity.task;
 
+import clan.midnight.kyrestia.bpmn.Delegation;
+import clan.midnight.kyrestia.bpmn.DelegationContext;
 import clan.midnight.kyrestia.bpmn.ProcessDefinitionException;
 import clan.midnight.kyrestia.bpmn.model.IdBasedElement;
 import clan.midnight.kyrestia.bpmn.model.Message;
 import clan.midnight.kyrestia.bpmn.model.flow.SequenceFlow;
 import clan.midnight.kyrestia.bpmn.model.support.ElementInit;
 import clan.midnight.kyrestia.bpmn.model.support.XmlReference;
+import clan.midnight.kyrestia.config.Configuration;
 import clan.midnight.kyrestia.infra.spi.TypeBinding;
 import clan.midnight.kyrestia.model.Node;
 import clan.midnight.kyrestia.model.RuntimeExecutionPoint;
@@ -23,11 +26,27 @@ public class ReceiveTask extends IdBasedElement implements Node {
     @XmlReference(type = XmlReference.Type.ATTRIBUTE_REF, value = "messageRef")
     private Message message;
 
+    @XmlReference(type = XmlReference.Type.ATTRIBUTE, value = "smart:class")
+    private String smartClass;
+
+    private Delegation delegation;
+
     @ElementInit
     public void checkOutgoingUniqueness() {
         if (outGoingSequenceFlowList.size() != 1) {
             throw new ProcessDefinitionException("[BPMN] Receive task has more than one or zero " +
                     "outgoing sequence flow, id: " + getId());
+        }
+    }
+
+    @ElementInit
+    public void checkAndInitializeDelegation() {
+        if (smartClass != null) {
+            Object delegationObject = Configuration.implementationAccessor.access(smartClass);
+            if (!(delegationObject instanceof Delegation)) {
+                throw new ProcessDefinitionException("[BPMN] Inaccessible or invalid delegation: " + smartClass);
+            }
+            delegation = (Delegation) delegationObject;
         }
     }
 
@@ -43,7 +62,9 @@ public class ReceiveTask extends IdBasedElement implements Node {
 
     @Override
     public void execute(RuntimeExecutionPoint executionPoint) {
-        // do nothing
+        if (delegation != null) {
+            delegation.execute(new DelegationContext(executionPoint));
+        }
     }
 
     @Override

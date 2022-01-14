@@ -6,6 +6,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class Element {
@@ -26,6 +27,11 @@ public class Element {
             attributeList.add(new Attribute(reader.getAttributeName(i), reader.getAttributeValue(i)));
         }
         this.childElementList = null;
+    }
+
+    public Element(QName type) {
+        this.type = type;
+        this.attributeList = new ArrayList<>(4);
     }
 
     public QName getType() {
@@ -60,6 +66,21 @@ public class Element {
         }
 
         return null;
+    }
+
+    public void addAttributeValue(String key, String value) {
+        Iterator<Attribute> iterator = attributeList.iterator();
+        while (iterator.hasNext()) {
+            Attribute attribute = iterator.next();
+            QName attributeKey = attribute.getKey();
+            if (attributeKey != null && XMLConstants.NULL_NS_URI.equals(attributeKey.getNamespaceURI())
+                    && attributeKey.getLocalPart() != null && attributeKey.getLocalPart().equals(key)) {
+                iterator.remove();
+                break;
+            }
+        }
+
+        attributeList.add(new Attribute(new QName(XMLConstants.NULL_NS_URI, key), value));
     }
 
     public void addChildElement(Element element) {

@@ -80,7 +80,7 @@ public class ElementFactory extends ElementRegistry {
         try {
             populateElement(element);
             initializeElement(element);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             throw new IllegalStateException("[BPMN] Element creation failed, id: " + id, ex);
         }
         registerIdBasedElement(element);
@@ -107,6 +107,7 @@ public class ElementFactory extends ElementRegistry {
                         break;
                     case ATTRIBUTE:
                         resolveAttribute(value, field, element);
+                        break;
                     default: // do nothing
                 }
             }
@@ -183,11 +184,15 @@ public class ElementFactory extends ElementRegistry {
         }
     }
 
-    private void initializeElement(IdBasedElement element) throws InvocationTargetException, IllegalAccessException {
+    private void initializeElement(IdBasedElement element) throws Throwable {
         Method[] methods = element.getClass().getMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(ElementInit.class)) {
-                method.invoke(element);
+                try {
+                    method.invoke(element);
+                } catch (InvocationTargetException e) {
+                    throw e.getTargetException();
+                }
             }
         }
     }

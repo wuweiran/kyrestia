@@ -19,6 +19,12 @@ public class ServiceTask extends IdBasedElement implements Node {
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT_REF, value = "bpmn:outgoing")
     private final ArrayList<SequenceFlow> outGoingSequenceFlowList = new ArrayList<>(1);
 
+    @XmlReference(type = XmlReference.Type.ATTRIBUTE, value = "camunda:class")
+    private String camundaClass;
+
+    @XmlReference(type = XmlReference.Type.ATTRIBUTE, value = "smart:class")
+    private String smartClass;
+
     @ElementInit
     public void checkOutgoingUniqueness() {
         if (outGoingSequenceFlowList.size() != 1) {

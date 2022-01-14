@@ -26,7 +26,7 @@ public class SendTask extends IdBasedElement implements Node {
     private String smartClass;
 
     @ElementInit
-    public void checkOutgoingUniqueness() {
+    public void check() {
         if (outGoingSequenceFlowList.size() != 1) {
             throw new ProcessDefinitionException("[BPMN] Send task has more than one or zero " +
                     "outgoing sequence flow, id: " + getId());
