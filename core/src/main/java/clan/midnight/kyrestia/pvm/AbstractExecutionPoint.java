@@ -68,9 +68,9 @@ public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends Serializable> T getContext(String key) {
-        if (rc.localContext == null) return null;
-        Serializable localValue = rc.localContext.get(key);
-        if (localValue != null) return (T) localValue;
+        if (rc.localContext != null && rc.localContext.containsKey(key)) {
+            return (T) rc.localContext.get(key);
+        }
         if (supEp == null) return null;
         return supEp.getContext(key);
     }

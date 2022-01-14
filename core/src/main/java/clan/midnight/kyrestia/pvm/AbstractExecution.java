@@ -20,6 +20,7 @@ public abstract class AbstractExecution implements Execution {
         this.process = process;
         this.mainEp = newMainExecutionPoint();
         this.status = Status.NEW;
+        this.atSafePoint = true;
     }
 
     protected abstract AbstractExecutionPoint newMainExecutionPoint();
