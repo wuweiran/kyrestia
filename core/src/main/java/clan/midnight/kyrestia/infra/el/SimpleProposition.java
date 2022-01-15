@@ -124,6 +124,7 @@ public class SimpleProposition {
         return null;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static boolean evaluate(String operator, Object[] operands) {
         switch (operator) {
             case "==":
