@@ -9,5 +9,6 @@ class ConfigurationTest {
     void testDefaultConfiguration() {
         assertNotNull(Configuration.implementationAccessor);
         assertNotNull(Configuration.expressionEvaluator);
+        assertNotNull(Configuration.executorService);
     }
 }
