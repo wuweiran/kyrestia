@@ -7,12 +7,15 @@
     <groupId>clan.midnight</groupId>
     <artifactId>kyrestia</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <modules>
         <module>core</module>
+        <module>interface</module>
+        <module>extension</module>
     </modules>
 
     <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>

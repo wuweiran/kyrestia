@@ -1,11 +1,12 @@
 # Kyrestia
 
-Kyrestia is a process engine supporting mainstream process definition standards. It is lightweighted, easy and fast to use, but has plenty of advanced features.
+Kyrestia, named after Kyrestia the Firstborne, is a process engine supporting mainstream process definition standards. It is not only lightweight, easy and fast to use, but also has plenty of advanced features.
 Kyrestia can be integrated into large-scale web applications and microservices to orchestrate business processes, as well as used by offline systems in traditional scenarios.
 
 ## Features
 - Fault tolerance
 - Extensibility
+- Configurability
 - *More features to be added...*
 
 ## Philosophy
