@@ -76,6 +76,21 @@ public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
     }
 
     @Override
+    public Map<String, Serializable> getContextMap() {
+        Map<String, Serializable> combined = new HashMap<>(8);
+        AbstractExecutionPoint ep = this;
+        while (ep != null) {
+            Map<String, Serializable> localContext = ep.rc.localContext;
+            if (localContext != null) {
+                for (Map.Entry<String, Serializable> entry : localContext.entrySet())
+                    combined.putIfAbsent(entry.getKey(), entry.getValue());
+            }
+            ep = ep.supEp;
+        }
+        return Collections.unmodifiableMap(combined);
+    }
+
+    @Override
     public RuntimeExecutionPoint newExecutionPointOn(Node node) {
         AbstractExecutionPoint newSubEp = newSubExecutionPoint(node);
         if (uc.subEps == null) uc.subEps = new ArrayList<>();
