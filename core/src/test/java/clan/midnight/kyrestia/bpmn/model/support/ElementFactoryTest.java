@@ -1,6 +1,5 @@
 package clan.midnight.kyrestia.bpmn.model.support;
 
-import clan.midnight.kyrestia.bpmn.ProcessDefinitionException;
 import clan.midnight.kyrestia.bpmn.model.BpmnProcess;
 import clan.midnight.kyrestia.bpmn.model.Definitions;
 import clan.midnight.kyrestia.bpmn.model.event.StartEvent;
@@ -22,7 +21,7 @@ class ElementFactoryTest {
         Element processXmlElement = new XMLParser().parseFirstElement(inputStream);
 
         ElementFactory elementFactory = new ElementFactory();
-        Definitions definitions = (Definitions) elementFactory.getElement(processXmlElement);
+        Definitions definitions = (Definitions) elementFactory.getIdBasedElement(processXmlElement);
 
         assertFalse(definitions.getProcesses().isEmpty());
 
@@ -48,6 +47,6 @@ class ElementFactoryTest {
         Element processXmlElement = new XMLParser().parseFirstElement(inputStream);
         ElementFactory elementFactory = new ElementFactory();
 
-        assertThrows(IllegalStateException.class, () -> elementFactory.getElement(processXmlElement));
+        assertThrows(IllegalStateException.class, () -> elementFactory.getIdBasedElement(processXmlElement));
     }
 }

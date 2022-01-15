@@ -1,7 +1,9 @@
 package clan.midnight.kyrestia.bpmn.model.support;
 
+import clan.midnight.kyrestia.bpmn.model.BpmnElement;
 import clan.midnight.kyrestia.bpmn.model.Definitions;
 import clan.midnight.kyrestia.bpmn.model.IdBasedElement;
+import clan.midnight.kyrestia.infra.reflect.ClassUtils;
 import clan.midnight.kyrestia.infra.spi.TypeBindingScanner;
 import clan.midnight.kyrestia.infra.xml.Element;
 import clan.midnight.kyrestia.infra.xml.XMLUtils;
@@ -29,7 +31,7 @@ public class ElementFactory extends ElementRegistry {
         this.contextXmlElementCache = new HashMap<>(64);
     }
 
-    public IdBasedElement getElement(Element xmlElement) {
+    public IdBasedElement getIdBasedElement(Element xmlElement) {
         String id = xmlElement.getAttributeValue(ID_KEY);
         if (id == null) {
             throw new IllegalArgumentException("[BPMN] Converting an XML element without id: " + xmlElement);
@@ -40,7 +42,7 @@ public class ElementFactory extends ElementRegistry {
         }
 
         putContextXmlElement(xmlElement);
-        return doGetElement(id, type);
+        return doGetIdBasedElement(id, type, xmlElement);
     }
 
     private Class<? extends IdBasedElement> getTypeByXmlElementType(QName type) {
@@ -66,7 +68,7 @@ public class ElementFactory extends ElementRegistry {
         return xmlElement;
     }
 
-    private IdBasedElement doGetElement(String id, Class<? extends IdBasedElement> type) {
+    private IdBasedElement doGetIdBasedElement(String id, Class<? extends IdBasedElement> type, Element currentXmlElement) {
         IdBasedElement element = getIdBasedElement(id);
         if (element != null) {
             return element;
@@ -78,7 +80,7 @@ public class ElementFactory extends ElementRegistry {
         element = getIdBasedElement(id, type);
         beforeIdBasedElementCreation(id);
         try {
-            populateElement(element);
+            populateElement(element, currentXmlElement);
             initializeElement(element);
         } catch (Throwable ex) {
             throw new IllegalStateException("[BPMN] Element creation failed, id: " + id, ex);
@@ -88,7 +90,7 @@ public class ElementFactory extends ElementRegistry {
         return element;
     }
 
-    private void populateElement(IdBasedElement element) throws IllegalAccessException {
+    private void populateElement(BpmnElement element, Element currentXmlElement) throws IllegalAccessException {
         Field[] fields = element.getClass().getDeclaredFields();
         for (Field field : fields) {
             XmlReference xmlReference = field.getAnnotation(XmlReference.class);
@@ -97,16 +99,16 @@ public class ElementFactory extends ElementRegistry {
                 String value = xmlReference.value();
                 switch (xmlReference.type()) {
                     case ATTRIBUTE_REF:
-                        resolveAttributeReference(value, field, element);
+                        resolveAttributeReference(value, field, element, currentXmlElement);
                         break;
                     case CHILD_ELEMENT_REF:
-                        resolveChildElementReference(value, field, element);
+                        resolveChildElementReference(value, field, element, currentXmlElement);
                         break;
                     case CHILD_ELEMENT:
-                        resolveChildElements(value, field, element);
+                        resolveChildElements(value, field, element, currentXmlElement);
                         break;
                     case ATTRIBUTE:
-                        resolveAttribute(value, field, element);
+                        resolveAttribute(value, field, element, currentXmlElement);
                         break;
                     default: // do nothing
                 }
@@ -114,36 +116,34 @@ public class ElementFactory extends ElementRegistry {
         }
     }
 
-    private void resolveAttributeReference(String xmlAttributeKey, Field field, IdBasedElement element)
-            throws IllegalAccessException {
+    private void resolveAttributeReference(String xmlAttributeKey, Field field, BpmnElement element,
+                                           Element xmlElement) throws IllegalAccessException {
         if (!IdBasedElement.class.isAssignableFrom(field.getType())) {
             throw new IllegalStateException("[BPMN] XmlReference with ATTRIBUTE_REF " +
                     "should be annotated on non-final fields of type that extends IdBasedElement");
         }
-        Element xmlElement = getContextXmlElement(element.getId());
         String refId = xmlElement.getAttributeValue(xmlAttributeKey);
         if (refId != null) {
             Element refXmlElement = getContextXmlElement(refId);
-            IdBasedElement refElement = getElement(refXmlElement);
+            IdBasedElement refElement = getIdBasedElement(refXmlElement);
             field.set(element, refElement);
         }
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void resolveChildElementReference(String xmlElementTypeDisplay, Field field, IdBasedElement element)
-            throws IllegalAccessException {
+    private void resolveChildElementReference(String xmlElementTypeDisplay, Field field, BpmnElement element,
+                                              Element xmlElement) throws IllegalAccessException {
         if (!Collection.class.isAssignableFrom(field.getType())) {
             throw new IllegalStateException("[BPMN] XmlReference with CHILD_ELEMENT_REF " +
                     "should be annotated on fields of type that extends Collection");
         }
-        Element xmlElement = getContextXmlElement(element.getId());
         Collection refCollection = (Collection) field.get(element);
         for (Element childXmlElement : xmlElement.getChildElement()) {
             if (xmlElementTypeDisplay.equals(XMLUtils.getQNameDisplay(childXmlElement.getType()))) {
                 String refId = childXmlElement.getTextContent();
                 if (refId != null) {
                     Element refXmlElement = getContextXmlElement(refId);
-                    IdBasedElement refElement = getElement(refXmlElement);
+                    IdBasedElement refElement = getIdBasedElement(refXmlElement);
                     refCollection.add(refElement);
                 }
             }
@@ -151,40 +151,38 @@ public class ElementFactory extends ElementRegistry {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void resolveChildElements(String xmlElementTypeDisplay, Field field, IdBasedElement element)
-            throws IllegalAccessException {
+    private void resolveChildElements(String xmlElementTypeDisplay, Field field, BpmnElement element,
+                                      Element xmlElement) throws IllegalAccessException {
         if (!Collection.class.isAssignableFrom(field.getType())) {
             throw new IllegalStateException("[BPMN] XmlReference with CHILD_ELEMENT_REF " +
                     "should be annotated on fields of type that extends Collection");
         }
-        Element xmlElement = getContextXmlElement(element.getId());
         Collection refCollection = (Collection) field.get(element);
         for (Element childXmlElement : xmlElement.getChildElement()) {
             if (xmlElementTypeDisplay.equals(XMLUtils.getQNameDisplay(childXmlElement.getType()))) {
                 String refId = childXmlElement.getAttributeValue(ID_KEY);
                 if (refId != null) {
                     Element refXmlElement = getContextXmlElement(refId);
-                    IdBasedElement refElement = getElement(refXmlElement);
+                    IdBasedElement refElement = getIdBasedElement(refXmlElement);
                     refCollection.add(refElement);
                 }
             }
         }
     }
 
-    private void resolveAttribute(String xmlAttributeKey, Field field, IdBasedElement element)
+    private void resolveAttribute(String xmlAttributeKey, Field field, BpmnElement element, Element xmlElement)
             throws IllegalAccessException {
         if (!String.class.equals(field.getType())) {
             throw new IllegalStateException("[BPMN] XmlReference with ATTRIBUTE " +
                     "should be annotated on a non-final String field");
         }
-        Element xmlElement = getContextXmlElement(element.getId());
         String xmlAttributeValue = xmlElement.getAttributeValue(xmlAttributeKey);
         if (xmlAttributeValue != null) {
             field.set(element, xmlAttributeValue);
         }
     }
 
-    private void initializeElement(IdBasedElement element) throws Throwable {
+    private void initializeElement(BpmnElement element) throws Throwable {
         Method[] methods = element.getClass().getMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(ElementInit.class)) {
@@ -195,5 +193,31 @@ public class ElementFactory extends ElementRegistry {
                 }
             }
         }
+    }
+
+    public BpmnElement getNonIdBasedElement(Element xmlElement) {
+        String id = xmlElement.getAttributeValue(ID_KEY);
+        if (id != null) {
+            throw new IllegalArgumentException("[BPMN] Converting an XML element without id: " + xmlElement);
+        }
+        Class<? extends IdBasedElement> type = getTypeByXmlElementType(xmlElement.getType());
+        if (type == null) {
+            throw new IllegalArgumentException("[BPMN] Converting an XML element with unsupported type: " + xmlElement);
+        }
+
+        putContextXmlElement(xmlElement);
+        return doGetNonIdBasedElement(type, xmlElement);
+    }
+
+    private BpmnElement doGetNonIdBasedElement(Class<? extends IdBasedElement> type, Element currentXmlElement) {
+        BpmnElement element = ClassUtils.createNewInstance(type);
+
+        try {
+            populateElement(element, currentXmlElement);
+            initializeElement(element);
+        } catch (Throwable ex) {
+            throw new IllegalStateException("[BPMN] Element creation failed", ex);
+        }
+        return element;
     }
 }

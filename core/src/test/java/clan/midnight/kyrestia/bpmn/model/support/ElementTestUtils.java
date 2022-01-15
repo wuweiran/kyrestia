@@ -12,7 +12,7 @@ public class ElementTestUtils {
     private ElementTestUtils() {}
 
     public static Process createProcessFromProcessXmlElement(Element processXmlElement) {
-        return (Process) new ElementFactory().getElement(processXmlElement);
+        return (Process) new ElementFactory().getIdBasedElement(processXmlElement);
     }
 
     public static Element createSimpleProcessXmlElementFromXmlElement(Element xmlElement) {
