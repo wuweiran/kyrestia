@@ -110,6 +110,9 @@ public class ElementFactory extends ElementRegistry {
                     case ATTRIBUTE:
                         resolveAttribute(value, field, element, currentXmlElement);
                         break;
+                    case TEXT:
+                        resolveText(field, element, currentXmlElement);
+                        break;
                     default: // do nothing
                 }
             }
@@ -179,6 +182,18 @@ public class ElementFactory extends ElementRegistry {
         String xmlAttributeValue = xmlElement.getAttributeValue(xmlAttributeKey);
         if (xmlAttributeValue != null) {
             field.set(element, xmlAttributeValue);
+        }
+    }
+
+    private void resolveText(Field field, BpmnElement element, Element xmlElement)
+            throws IllegalAccessException {
+        if (!String.class.equals(field.getType())) {
+            throw new IllegalStateException("[BPMN] XmlReference with TEXT " +
+                    "should be annotated on a non-final String field");
+        }
+        String textContent = xmlElement.getTextContent();
+        if (textContent != null) {
+            field.set(element, textContent);
         }
     }
 

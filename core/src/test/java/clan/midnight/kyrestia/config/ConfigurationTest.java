@@ -8,5 +8,6 @@ class ConfigurationTest {
     @Test
     void testDefaultConfiguration() {
         assertNotNull(Configuration.implementationAccessor);
+        assertNotNull(Configuration.expressionEvaluator);
     }
 }

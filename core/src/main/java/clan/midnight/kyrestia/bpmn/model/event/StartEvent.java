@@ -40,6 +40,6 @@ public class StartEvent extends IdBasedElement implements Node {
 
     @Override
     public Node leave(RuntimeExecutionPoint executionPoint) {
-        return getOutgoingSequenceFlow();
+        return getOutgoingSequenceFlow().getTargetNode();
     }
 }
