@@ -1,6 +1,7 @@
 package clan.midnight.kyrestia.bpmn.model.event;
 
 import clan.midnight.kyrestia.bpmn.ProcessDefinitionException;
+import clan.midnight.kyrestia.bpmn.model.BpmnProcess;
 import clan.midnight.kyrestia.bpmn.model.IdBasedElement;
 import clan.midnight.kyrestia.bpmn.model.flow.SequenceFlow;
 import clan.midnight.kyrestia.bpmn.model.support.ElementInit;
@@ -13,6 +14,9 @@ import java.util.ArrayList;
 
 @TypeBinding("bpmn:startEvent")
 public class StartEvent extends IdBasedElement implements Node {
+    @XmlReference(type = XmlReference.Type.ANCESTOR_ELEMENT, value = "bpmn:process")
+    private BpmnProcess process;
+
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT_REF, value = "bpmn:outgoing")
     private final ArrayList<SequenceFlow> outGoingSequenceFlowList = new ArrayList<>(1);
 

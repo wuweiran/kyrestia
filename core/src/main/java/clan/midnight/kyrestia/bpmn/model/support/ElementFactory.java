@@ -113,6 +113,9 @@ public class ElementFactory extends ElementRegistry {
                     case TEXT:
                         resolveText(field, element, currentXmlElement);
                         break;
+                    case ANCESTOR_ELEMENT:
+                        resolveAncestorElement(value, field, element, currentXmlElement);
+                        break;
                     default: // do nothing
                 }
             }
@@ -197,6 +200,22 @@ public class ElementFactory extends ElementRegistry {
         String textContent = xmlElement.getTextContent();
         if (textContent != null) {
             field.set(element, textContent);
+        }
+    }
+
+    private void resolveAncestorElement(String xmlElementTypeDisplay, Field field, BpmnElement element,
+                                        Element xmlElement) throws IllegalAccessException {
+        if (!BpmnElement.class.isAssignableFrom(field.getType())) {
+            throw new IllegalStateException("[BPMN] XmlReference with PARENT_ELEMENT " +
+                    "should be annotated on non-final fields of type that extends BpmnElement");
+        }
+
+        Element ancestorXmlElement = xmlElement.getParentElement();
+        while (ancestorXmlElement != null) {
+            if (xmlElementTypeDisplay.equals(XMLUtils.getQNameDisplay(ancestorXmlElement.getType()))) {
+                field.set(element, ancestorXmlElement);
+            }
+            ancestorXmlElement = ancestorXmlElement.getParentElement();
         }
     }
 

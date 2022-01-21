@@ -3,6 +3,7 @@ package clan.midnight.kyrestia.bpmn.model.activity.task;
 import clan.midnight.kyrestia.bpmn.Delegation;
 import clan.midnight.kyrestia.bpmn.DelegationContext;
 import clan.midnight.kyrestia.bpmn.ProcessDefinitionException;
+import clan.midnight.kyrestia.bpmn.model.BpmnProcess;
 import clan.midnight.kyrestia.bpmn.model.IdBasedElement;
 import clan.midnight.kyrestia.bpmn.model.flow.SequenceFlow;
 import clan.midnight.kyrestia.bpmn.model.support.ElementInit;
@@ -16,6 +17,9 @@ import java.util.ArrayList;
 
 @TypeBinding("bpmn:sendTask")
 public class SendTask extends IdBasedElement implements Node {
+    @XmlReference(type = XmlReference.Type.ANCESTOR_ELEMENT, value = "bpmn:process")
+    private BpmnProcess process;
+
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT_REF, value = "bpmn:incoming")
     private final ArrayList<SequenceFlow> incomingSequenceFlowList = new ArrayList<>(2);
 

@@ -14,6 +14,7 @@ public class Element {
     private final ArrayList<Attribute> attributeList;
     private String textContent;
     private ArrayList<Element> childElementList;
+    private Element parentElement;
 
     Element(XMLStreamReader reader) {
         if (reader.getEventType() != XMLStreamConstants.START_ELEMENT) {
@@ -88,11 +89,20 @@ public class Element {
             childElementList = new ArrayList<>();
         }
 
+        element.setParentElement(this);
         childElementList.add(element);
     }
 
     public List<Element> getChildElement() {
         return childElementList == null ? Collections.emptyList() : Collections.unmodifiableList(childElementList);
+    }
+
+    public Element getParentElement() {
+        return parentElement;
+    }
+
+    public void setParentElement(Element parentElement) {
+        this.parentElement = parentElement;
     }
 
     @Override

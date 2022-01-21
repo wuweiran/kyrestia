@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 @Documented
 public @interface XmlReference {
-    enum Type {ATTRIBUTE_REF, CHILD_ELEMENT_REF, CHILD_ELEMENT, ATTRIBUTE, TEXT}
+    enum Type {ATTRIBUTE_REF, CHILD_ELEMENT_REF, CHILD_ELEMENT, ATTRIBUTE, TEXT, ANCESTOR_ELEMENT}
     Type type();
 
     String value();
