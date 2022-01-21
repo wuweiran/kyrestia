@@ -168,6 +168,9 @@ public class ElementFactory extends ElementRegistry {
                     Element refXmlElement = getContextXmlElement(refId);
                     IdBasedElement refElement = getIdBasedElement(refXmlElement);
                     refCollection.add(refElement);
+                } else {
+                    BpmnElement nonIdBasedElement = getNonIdBasedElement(childXmlElement);
+                    refCollection.add(nonIdBasedElement);
                 }
             }
         }
