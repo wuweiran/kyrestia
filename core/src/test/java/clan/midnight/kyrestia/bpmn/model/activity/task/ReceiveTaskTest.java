@@ -4,7 +4,6 @@ import clan.midnight.kyrestia.bpmn.model.Message;
 import clan.midnight.kyrestia.bpmn.model.support.ElementTestUtils;
 import clan.midnight.kyrestia.infra.xml.Element;
 import clan.midnight.kyrestia.model.Execution;
-import clan.midnight.kyrestia.model.ExecutionPoint;
 import clan.midnight.kyrestia.model.Process;
 import clan.midnight.kyrestia.pvm.SingleThreadSyncExecution;
 import org.junit.jupiter.api.Test;
@@ -24,11 +23,11 @@ class ReceiveTaskTest {
         Execution execution = new SingleThreadSyncExecution(process);
         execution.run();
 
-        assertEquals(Execution.Status.RUNNING, execution.getStatus());
+        assertEquals(Execution.Status.RUNNING, execution.status());
 
         execution.signal(messageXmlElement.getAttributeValue("id"));
 
-        assertEquals(Execution.Status.TERMINATED, execution.getStatus());
+        assertEquals(Execution.Status.TERMINATED, execution.status());
     }
 
     @Test
@@ -42,6 +41,6 @@ class ReceiveTaskTest {
         execution.run();
         execution.signal(Message.GLOBAL_DEFAULT_MESSAGE.getId());
 
-        assertEquals(Execution.Status.TERMINATED, execution.getStatus());
+        assertEquals(Execution.Status.TERMINATED, execution.status());
     }
 }

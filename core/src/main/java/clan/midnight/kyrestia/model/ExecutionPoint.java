@@ -5,23 +5,23 @@ import java.util.Collection;
 import java.util.Map;
 
 public interface ExecutionPoint {
-    Execution getExecution();
+    Execution execution();
 
     enum Status {RUNNABLE, WAITING, TERMINATED}
-    Status getStatus();
+    Status status();
 
-    Node getCurrentNode();
+    Node currentNode();
 
     enum NodeStage {ENTERING, EXECUTING, LEAVING}
-    NodeStage getCurrentNodeStage();
+    NodeStage currentNodeStage();
 
-    ExecutionPoint getSupExecutionPoint();
+    ExecutionPoint supExecutionPoint();
 
-    Collection<ExecutionPoint> getSubExecutionPoints();
+    Collection<ExecutionPoint> subExecutionPoints();
 
-    Map<String, Serializable> getLocalContext();
+    Map<String, Serializable> localContext();
 
-    String getWaitEvent();
+    String waitEvent();
 
     boolean isWaitingBereaved();
 }

@@ -34,7 +34,7 @@ public class SequenceFlow extends IdBasedElement {
             return true;
         }
 
-        Map<String, Object> contextMap = (Map) executionPoint.getContextMap();
+        Map<String, Object> contextMap = (Map) executionPoint.buildContextMap();
         for (ConditionExpression conditionExpression : conditionExpressionList) {
             if (!conditionExpression.match(contextMap)) {
                 return false;

@@ -15,7 +15,7 @@ class SingleThreadSyncExecutionTest {
 
         execution.run();
 
-        assertEquals(Execution.Status.TERMINATED, execution.getStatus());
+        assertEquals(Execution.Status.TERMINATED, execution.status());
         assertTrue(n0.isTraversed());
     }
 
@@ -31,7 +31,7 @@ class SingleThreadSyncExecutionTest {
 
         execution.run();
 
-        assertEquals(Execution.Status.TERMINATED, execution.getStatus());
+        assertEquals(Execution.Status.TERMINATED, execution.status());
         assertTrue(n0.isTraversed());
         assertTrue(n1.isTraversed());
         assertTrue(n2.isTraversed());
@@ -47,14 +47,14 @@ class SingleThreadSyncExecutionTest {
 
         execution.run();
 
-        assertEquals(Execution.Status.RUNNING, execution.getStatus());
+        assertEquals(Execution.Status.RUNNING, execution.status());
         assertTrue(n0.isEntered());
         assertTrue(n0.isExecuted());
         assertFalse(n0.isLeft());
 
         execution.signal("TEST_STR_0");
 
-        assertEquals(Execution.Status.TERMINATED, execution.getStatus());
+        assertEquals(Execution.Status.TERMINATED, execution.status());
         assertTrue(n0.isTraversed());
     }
 
@@ -70,7 +70,7 @@ class SingleThreadSyncExecutionTest {
 
         execution.run();
 
-        assertEquals(Execution.Status.TERMINATED, execution.getStatus());
+        assertEquals(Execution.Status.TERMINATED, execution.status());
         assertTrue(n1.isTraversed());
         assertTrue(n2.isTraversed());
         assertTrue(n30.isTraversed());
@@ -89,7 +89,7 @@ class SingleThreadSyncExecutionTest {
 
         execution.run();
 
-        assertEquals(Execution.Status.RUNNING, execution.getStatus());
+        assertEquals(Execution.Status.RUNNING, execution.status());
         assertFalse(n1.isTraversed());
         assertFalse(n2.isTraversed());
         assertTrue(n30.isTraversed());
@@ -97,7 +97,7 @@ class SingleThreadSyncExecutionTest {
 
         execution.signal("TEST_STR_0");
 
-        assertEquals(Execution.Status.TERMINATED, execution.getStatus());
+        assertEquals(Execution.Status.TERMINATED, execution.status());
         assertTrue(n1.isTraversed());
         assertTrue(n2.isTraversed());
         assertTrue(n31.isTraversed());

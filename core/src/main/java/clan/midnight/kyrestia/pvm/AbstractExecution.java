@@ -26,33 +26,33 @@ public abstract class AbstractExecution implements Execution {
     protected abstract AbstractExecutionPoint newMainExecutionPoint();
 
     @Override
-    public Process getProcess() {
+    public Process process() {
         return process;
     }
 
     @Override
-    public Collection<ExecutionPoint> getExecutionPoints() {
+    public Collection<ExecutionPoint> executionPoints() {
         if (!atSafePoint) return getExecutionPoints(ssMainEp);
         ssMainEp = SnapshotExecutionPoint.snapshot(this);
         return getExecutionPoints(ssMainEp);
     }
 
     private Collection<ExecutionPoint> getExecutionPoints(ExecutionPoint rootEp) {
-        if (rootEp.getSubExecutionPoints().isEmpty()) return Collections.singletonList(rootEp);
+        if (rootEp.subExecutionPoints().isEmpty()) return Collections.singletonList(rootEp);
 
         ArrayList<ExecutionPoint> res = new ArrayList<>();
         Queue<ExecutionPoint> q = new LinkedList<>();
         q.offer(rootEp);
         while (!q.isEmpty()) {
             ExecutionPoint cur = q.poll();
-            for (ExecutionPoint ep : cur.getSubExecutionPoints()) q.offer(ep);
+            for (ExecutionPoint ep : cur.subExecutionPoints()) q.offer(ep);
             res.add(cur);
         }
         return res;
     }
 
     @Override
-    public Status getStatus() {
+    public Status status() {
         return status;
     }
 
@@ -94,7 +94,7 @@ public abstract class AbstractExecution implements Execution {
     }
 
     @Override
-    public void resume() {
+    public void proceed() {
         if (status != Status.SUSPEND) {
             throw new IllegalStateException("[PVM] Trying to resume execution of a wrong status: " + status);
         }

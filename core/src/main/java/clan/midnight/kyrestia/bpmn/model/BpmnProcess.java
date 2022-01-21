@@ -27,7 +27,7 @@ public class BpmnProcess extends IdBasedElement implements Process {
     }
 
     @Override
-    public Node getStartNode() {
+    public Node startNode() {
         return getStartEvent();
     }
 }

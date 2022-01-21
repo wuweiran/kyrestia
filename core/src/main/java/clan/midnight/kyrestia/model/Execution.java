@@ -3,12 +3,12 @@ package clan.midnight.kyrestia.model;
 import java.util.Collection;
 
 public interface Execution {
-    Process getProcess();
+    Process process();
 
-    Collection<ExecutionPoint> getExecutionPoints();
+    Collection<ExecutionPoint> executionPoints();
 
     enum Status {NEW, RUNNING, SUSPEND, TERMINATED}
-    Status getStatus();
+    Status status();
 
     void run();
 
@@ -16,5 +16,5 @@ public interface Execution {
 
     void pause();
 
-    void resume();
+    void proceed();
 }

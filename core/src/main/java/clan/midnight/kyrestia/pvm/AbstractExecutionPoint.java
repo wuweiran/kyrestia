@@ -44,7 +44,7 @@ public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
         this.execution = execution;
         this.supEp = null;
         this.rc = new MetaContainer(null, null, ExecutionPoint.Status.RUNNABLE,
-                execution.getProcess().getStartNode(), ExecutionPoint.NodeStage.ENTERING,
+                execution.process().startNode(), ExecutionPoint.NodeStage.ENTERING,
                 null, false);
     }
 
@@ -76,7 +76,7 @@ public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
     }
 
     @Override
-    public Map<String, Serializable> getContextMap() {
+    public Map<String, Serializable> buildContextMap() {
         Map<String, Serializable> combined = new HashMap<>(8);
         AbstractExecutionPoint ep = this;
         while (ep != null) {
@@ -112,7 +112,7 @@ public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
     }
 
     protected synchronized void run() {
-        while (execution.getStatus() != Execution.Status.SUSPEND && rc.status == ExecutionPoint.Status.RUNNABLE) {
+        while (execution.status() != Execution.Status.SUSPEND && rc.status == ExecutionPoint.Status.RUNNABLE) {
             uc = new MetaContainer(rc);
             switch (rc.currentNodeStage) {
                 case ENTERING:

@@ -8,7 +8,7 @@ public interface RuntimeExecutionPoint {
 
     <T extends Serializable> T getContext(String key);
 
-    Map<String, Serializable> getContextMap();
+    Map<String, Serializable> buildContextMap();
 
     RuntimeExecutionPoint newExecutionPointOn(Node node);
 

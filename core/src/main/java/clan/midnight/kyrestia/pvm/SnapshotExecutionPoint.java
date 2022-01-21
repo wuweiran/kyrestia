@@ -40,42 +40,42 @@ public class SnapshotExecutionPoint implements ExecutionPoint {
     }
 
     @Override
-    public Execution getExecution() {
+    public Execution execution() {
         return execution;
     }
 
     @Override
-    public Status getStatus() {
+    public Status status() {
         return status;
     }
 
     @Override
-    public Node getCurrentNode() {
+    public Node currentNode() {
         return currentNode;
     }
 
     @Override
-    public NodeStage getCurrentNodeStage() {
+    public NodeStage currentNodeStage() {
         return currentNodeStage;
     }
 
     @Override
-    public ExecutionPoint getSupExecutionPoint() {
+    public ExecutionPoint supExecutionPoint() {
         return supEp;
     }
 
     @Override
-    public Collection<ExecutionPoint> getSubExecutionPoints() {
+    public Collection<ExecutionPoint> subExecutionPoints() {
         return subEps;
     }
 
     @Override
-    public Map<String, Serializable> getLocalContext() {
+    public Map<String, Serializable> localContext() {
         return localContext;
     }
 
     @Override
-    public String getWaitEvent() {
+    public String waitEvent() {
         return waitEvent;
     }
 
