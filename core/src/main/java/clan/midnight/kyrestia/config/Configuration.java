@@ -14,6 +14,7 @@ public class Configuration {
     public static ExpressionEvaluator expressionEvaluator;
     public static boolean multiThreadExecution;
     public static ExecutorService executorService;
+    public static IdGenerator idGenerator;
 
     static {
         ExtensionScanner scanner = new ExtensionScanner(Configuration.class.getPackage().getName());
@@ -22,5 +23,6 @@ public class Configuration {
         expressionEvaluator = scanner.getExtension(CONFIG_EXTENSION_GROUP, ExpressionEvaluator.class);
         multiThreadExecution = false;
         executorService = scanner.getExtension(CONFIG_EXTENSION_GROUP, ExecutorService.class);
+        idGenerator = scanner.getExtension(CONFIG_EXTENSION_GROUP, IdGenerator.class);
     }
 }

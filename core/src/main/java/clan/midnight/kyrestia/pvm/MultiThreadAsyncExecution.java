@@ -9,8 +9,8 @@ import java.util.concurrent.Future;
 public class MultiThreadAsyncExecution extends AbstractExecution {
     private final ExecutorService executorService;
 
-    public MultiThreadAsyncExecution(Process process, ExecutorService executorService) {
-        super(process);
+    public MultiThreadAsyncExecution(String id, Process process, ExecutorService executorService) {
+        super(id, process);
         this.executorService = executorService;
     }
 

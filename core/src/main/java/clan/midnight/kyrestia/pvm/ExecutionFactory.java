@@ -8,10 +8,10 @@ public class ExecutionFactory {
     private ExecutionFactory() {}
 
     public static Execution createExecution(Process process) {
+        String id = Configuration.idGenerator.generate();
         if (Configuration.multiThreadExecution) {
-            return new MultiThreadAsyncExecution(process, Configuration.executorService);
+            return new MultiThreadAsyncExecution(id, process, Configuration.executorService);
         }
-
-        return new SingleThreadSyncExecution(process);
+        return new SingleThreadSyncExecution(id, process);
     }
 }

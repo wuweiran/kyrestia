@@ -3,6 +3,8 @@ package clan.midnight.kyrestia.pvm;
 import clan.midnight.kyrestia.model.RuntimeExecutionPoint;
 import clan.midnight.kyrestia.model.Node;
 
+import java.util.UUID;
+
 class NonReentrantNode implements Node {
     private final Node next;
     private boolean entered = false;
@@ -11,6 +13,11 @@ class NonReentrantNode implements Node {
 
     NonReentrantNode(Node next) {
         this.next = next;
+    }
+
+    @Override
+    public String id() {
+        return UUID.randomUUID().toString();
     }
 
     @Override

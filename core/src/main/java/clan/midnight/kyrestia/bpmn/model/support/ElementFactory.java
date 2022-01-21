@@ -213,7 +213,11 @@ public class ElementFactory extends ElementRegistry {
         Element ancestorXmlElement = xmlElement.getParentElement();
         while (ancestorXmlElement != null) {
             if (xmlElementTypeDisplay.equals(XMLUtils.getQNameDisplay(ancestorXmlElement.getType()))) {
-                field.set(element, ancestorXmlElement);
+                String refId = ancestorXmlElement.getAttributeValue(ID_KEY);
+                if (refId != null) {
+                    IdBasedElement refElement = getIdBasedElement(ancestorXmlElement);
+                    field.set(element, refElement);
+                }
             }
             ancestorXmlElement = ancestorXmlElement.getParentElement();
         }

@@ -20,7 +20,7 @@ class ReceiveTaskTest {
         processXmlElement.addChildElement(messageXmlElement);
         Process process = ElementTestUtils.createProcessFromProcessXmlElement(processXmlElement);
 
-        Execution execution = new SingleThreadSyncExecution(process);
+        Execution execution = new SingleThreadSyncExecution("test_execution", process);
         execution.run();
 
         assertEquals(Execution.Status.RUNNING, execution.status());
@@ -37,7 +37,7 @@ class ReceiveTaskTest {
         receiveTaskXmlElement.addAttributeValue("smart:class", TestDelegation.class.getName());
         Process process = ElementTestUtils.createProcessFromProcessXmlElement(processXmlElement);
 
-        Execution execution = new SingleThreadSyncExecution(process);
+        Execution execution = new SingleThreadSyncExecution("test_execution", process);
         execution.run();
         execution.signal(Message.GLOBAL_DEFAULT_MESSAGE.getId());
 

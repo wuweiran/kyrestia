@@ -4,8 +4,8 @@ import clan.midnight.kyrestia.model.Node;
 import clan.midnight.kyrestia.model.Process;
 
 public class SingleThreadSyncExecution extends AbstractExecution {
-    public SingleThreadSyncExecution(Process process) {
-        super(process);
+    public SingleThreadSyncExecution(String id, Process process) {
+        super(id, process);
     }
 
     @Override

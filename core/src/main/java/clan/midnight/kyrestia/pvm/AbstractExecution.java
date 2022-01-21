@@ -7,6 +7,8 @@ import clan.midnight.kyrestia.model.Process;
 import java.util.*;
 
 public abstract class AbstractExecution implements Execution {
+    protected final String id;
+
     protected final Process process;
 
     protected final AbstractExecutionPoint mainEp;
@@ -16,7 +18,8 @@ public abstract class AbstractExecution implements Execution {
     protected volatile SnapshotExecutionPoint ssMainEp;
     protected volatile boolean atSafePoint;
 
-    protected AbstractExecution(Process process) {
+    protected AbstractExecution(String id, Process process) {
+        this.id = id;
         this.process = process;
         this.mainEp = newMainExecutionPoint();
         this.status = Status.NEW;
@@ -24,6 +27,11 @@ public abstract class AbstractExecution implements Execution {
     }
 
     protected abstract AbstractExecutionPoint newMainExecutionPoint();
+
+    @Override
+    public String id() {
+        return id;
+    }
 
     @Override
     public Process process() {

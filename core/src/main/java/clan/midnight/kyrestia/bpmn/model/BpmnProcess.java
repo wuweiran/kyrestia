@@ -27,6 +27,11 @@ public class BpmnProcess extends IdBasedElement implements Process {
     }
 
     @Override
+    public String id() {
+        return getId();
+    }
+
+    @Override
     public Node startNode() {
         return getStartEvent();
     }

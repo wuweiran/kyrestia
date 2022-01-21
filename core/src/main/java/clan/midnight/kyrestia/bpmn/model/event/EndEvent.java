@@ -19,6 +19,11 @@ public class EndEvent extends IdBasedElement implements Node {
     private final ArrayList<SequenceFlow> incomingSequenceFlowList = new ArrayList<>(4);
 
     @Override
+    public String id() {
+        return process.getId() + ":" + getId();
+    }
+
+    @Override
     public void enter(RuntimeExecutionPoint executionPoint) {
         // do nothing
     }

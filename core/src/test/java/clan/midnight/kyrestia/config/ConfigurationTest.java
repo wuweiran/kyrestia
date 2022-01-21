@@ -10,5 +10,6 @@ class ConfigurationTest {
         assertNotNull(Configuration.implementationAccessor);
         assertNotNull(Configuration.expressionEvaluator);
         assertNotNull(Configuration.executorService);
+        assertNotNull(Configuration.idGenerator);
     }
 }

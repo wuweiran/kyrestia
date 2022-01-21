@@ -36,6 +36,11 @@ public class ManualTask extends IdBasedElement implements Node {
     }
 
     @Override
+    public String id() {
+        return process.getId() + ":" + getId();
+    }
+
+    @Override
     public void enter(RuntimeExecutionPoint executionPoint) {
         // do nothing
     }

@@ -59,6 +59,11 @@ public class ReceiveTask extends IdBasedElement implements Node {
     }
 
     @Override
+    public String id() {
+        return process.getId() + ":" + getId();
+    }
+
+    @Override
     public void enter(RuntimeExecutionPoint executionPoint) {
         Message waitingMessage = message == null ? Message.GLOBAL_DEFAULT_MESSAGE : message;
         executionPoint.await(waitingMessage.getId());

@@ -22,6 +22,11 @@ public class ParallelGateway extends IdBasedElement implements Node {
     private final ArrayList<SequenceFlow> outGoingSequenceFlowList = new ArrayList<>(1);
 
     @Override
+    public String id() {
+        return process.getId() + ":" + getId();
+    }
+
+    @Override
     public void enter(RuntimeExecutionPoint executionPoint) {
         // do nothing
     }
