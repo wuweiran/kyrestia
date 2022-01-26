@@ -13,7 +13,7 @@ import java.util.List;
 public class ProcessService {
     private ProcessService() {}
 
-    List<BpmnProcess> loadProcesses(InputStream inputStream) throws XMLParseException {
+    public static List<BpmnProcess> loadProcesses(InputStream inputStream) throws XMLParseException {
         Element processXmlElement = new XMLParser().parseFirstElement(inputStream);
         ElementFactory elementFactory = new ElementFactory();
         Definitions definitions = (Definitions) elementFactory.getIdBasedElement(processXmlElement);
