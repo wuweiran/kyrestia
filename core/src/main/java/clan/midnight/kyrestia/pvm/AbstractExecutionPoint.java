@@ -40,10 +40,10 @@ public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
         }
     }
 
-    protected AbstractExecutionPoint(AbstractExecution execution) {
+    protected AbstractExecutionPoint(AbstractExecution execution, Map<String, Serializable> localContext) {
         this.execution = execution;
         this.supEp = null;
-        this.rc = new MetaContainer(null, null, ExecutionPoint.Status.RUNNABLE,
+        this.rc = new MetaContainer(null, localContext, ExecutionPoint.Status.RUNNABLE,
                 execution.process().startNode(), ExecutionPoint.NodeStage.ENTERING,
                 null, false);
     }

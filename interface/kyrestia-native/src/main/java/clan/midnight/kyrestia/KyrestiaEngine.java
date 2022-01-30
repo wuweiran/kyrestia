@@ -8,7 +8,9 @@ import clan.midnight.kyrestia.model.Process;
 import clan.midnight.kyrestia.pvm.ExecutionFactory;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -28,12 +30,12 @@ public class KyrestiaEngine {
         }
     }
 
-    public Execution execute(String processId) {
+    public Execution execute(String processId, Map<String, Serializable> parameters) {
         Process process = processes.get(processId);
         if (process == null) {
             throw new EngineException("Kyrestia: Cannot find process.");
         }
 
-        return ExecutionFactory.createExecution(process);
+        return ExecutionFactory.createExecution(process, parameters);
     }
 }
