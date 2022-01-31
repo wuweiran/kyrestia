@@ -1,13 +1,11 @@
 package clan.midnight.kyrestia.model;
 
-import java.util.Collection;
-
 public interface Execution {
     String id();
 
     Process process();
 
-    Collection<ExecutionPoint> executionPoints();
+    ExecutionPoint snapshot();
 
     enum Status {NEW, RUNNING, SUSPEND, TERMINATED}
     Status status();

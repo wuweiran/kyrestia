@@ -4,8 +4,6 @@ import clan.midnight.kyrestia.model.Execution;
 import clan.midnight.kyrestia.model.ExecutionPoint;
 import clan.midnight.kyrestia.model.Process;
 
-import java.util.*;
-
 public abstract class AbstractExecution implements Execution {
     protected final String id;
 
@@ -39,24 +37,10 @@ public abstract class AbstractExecution implements Execution {
     }
 
     @Override
-    public Collection<ExecutionPoint> executionPoints() {
-        if (!atSafePoint) return getExecutionPoints(ssMainEp);
+    public ExecutionPoint snapshot() {
+        if (!atSafePoint) return ssMainEp;
         ssMainEp = SnapshotExecutionPoint.snapshot(this);
-        return getExecutionPoints(ssMainEp);
-    }
-
-    private Collection<ExecutionPoint> getExecutionPoints(ExecutionPoint rootEp) {
-        if (rootEp.subExecutionPoints().isEmpty()) return Collections.singletonList(rootEp);
-
-        ArrayList<ExecutionPoint> res = new ArrayList<>();
-        Queue<ExecutionPoint> q = new LinkedList<>();
-        q.offer(rootEp);
-        while (!q.isEmpty()) {
-            ExecutionPoint cur = q.poll();
-            for (ExecutionPoint ep : cur.subExecutionPoints()) q.offer(ep);
-            res.add(cur);
-        }
-        return res;
+        return ssMainEp;
     }
 
     @Override
