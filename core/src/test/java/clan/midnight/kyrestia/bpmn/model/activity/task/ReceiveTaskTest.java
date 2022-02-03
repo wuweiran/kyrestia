@@ -2,10 +2,11 @@ package clan.midnight.kyrestia.bpmn.model.activity.task;
 
 import clan.midnight.kyrestia.bpmn.model.Message;
 import clan.midnight.kyrestia.bpmn.model.support.ElementTestUtils;
+import clan.midnight.kyrestia.config.Configuration;
 import clan.midnight.kyrestia.infra.xml.Element;
 import clan.midnight.kyrestia.model.Execution;
 import clan.midnight.kyrestia.model.Process;
-import clan.midnight.kyrestia.pvm.SingleThreadSyncExecution;
+import clan.midnight.kyrestia.pvm.ExecutionFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,8 @@ class ReceiveTaskTest {
         processXmlElement.addChildElement(messageXmlElement);
         Process process = ElementTestUtils.createProcessFromProcessXmlElement(processXmlElement);
 
-        Execution execution = new SingleThreadSyncExecution("test_execution", process);
+        Configuration.multiThreadExecution = false;
+        Execution execution = ExecutionFactory.createExecution(process);
         execution.run();
 
         assertEquals(Execution.Status.RUNNING, execution.status());
@@ -37,7 +39,8 @@ class ReceiveTaskTest {
         receiveTaskXmlElement.addAttributeValue("smart:class", TestDelegation.class.getName());
         Process process = ElementTestUtils.createProcessFromProcessXmlElement(processXmlElement);
 
-        Execution execution = new SingleThreadSyncExecution("test_execution", process);
+        Configuration.multiThreadExecution = false;
+        Execution execution = ExecutionFactory.createExecution(process);
         execution.run();
         execution.signal(Message.GLOBAL_DEFAULT_MESSAGE.getId());
 

@@ -9,11 +9,14 @@ import clan.midnight.kyrestia.model.Node;
 import clan.midnight.kyrestia.model.Process;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @TypeBinding("bpmn:process")
 public class BpmnProcess extends IdBasedElement implements Process {
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT, value = "bpmn:startEvent")
     private final ArrayList<StartEvent> startEventList = new ArrayList<>(1);
+
+    private final HashMap<String, Node> nodeMap = new HashMap<>(16);
 
     @ElementInit
     public void checkStartEventUniqueness() {
@@ -26,6 +29,10 @@ public class BpmnProcess extends IdBasedElement implements Process {
         return startEventList.get(0);
     }
 
+    public void registerNode(Node node) {
+        nodeMap.put(node.id(), node);
+    }
+
     @Override
     public String id() {
         return getId();
@@ -34,5 +41,10 @@ public class BpmnProcess extends IdBasedElement implements Process {
     @Override
     public Node startNode() {
         return getStartEvent();
+    }
+
+    @Override
+    public Node node(String nodeId) {
+        return nodeMap.get(nodeId);
     }
 }

@@ -56,6 +56,18 @@ public abstract class AbstractExecutionPoint implements RuntimeExecutionPoint {
                 null, false);
     }
 
+    protected AbstractExecutionPoint(AbstractExecution execution, MetaContainer metaContainer) {
+        this.execution = execution;
+        this.supEp = null;
+        this.rc = metaContainer;
+    }
+
+    protected AbstractExecutionPoint(AbstractExecutionPoint supEp, MetaContainer metaContainer) {
+        this.supEp = supEp;
+        this.execution = supEp.execution;
+        this.rc = metaContainer;
+    }
+
     Collection<AbstractExecutionPoint> getSubEps() {
         return rc.subEps == null ? Collections.emptyList() : rc.subEps;
     }

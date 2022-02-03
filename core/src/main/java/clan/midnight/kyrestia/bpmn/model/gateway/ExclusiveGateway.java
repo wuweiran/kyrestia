@@ -3,6 +3,7 @@ package clan.midnight.kyrestia.bpmn.model.gateway;
 import clan.midnight.kyrestia.bpmn.model.BpmnProcess;
 import clan.midnight.kyrestia.bpmn.model.IdBasedElement;
 import clan.midnight.kyrestia.bpmn.model.flow.SequenceFlow;
+import clan.midnight.kyrestia.bpmn.model.support.ElementInit;
 import clan.midnight.kyrestia.bpmn.model.support.XmlReference;
 import clan.midnight.kyrestia.infra.spi.TypeBinding;
 import clan.midnight.kyrestia.model.Node;
@@ -20,6 +21,11 @@ public class ExclusiveGateway extends IdBasedElement implements Node {
 
     @XmlReference(type = XmlReference.Type.CHILD_ELEMENT_REF, value = "bpmn:outgoing")
     private final ArrayList<SequenceFlow> outGoingSequenceFlowList = new ArrayList<>(1);
+
+    @ElementInit
+    public void registerToProcess() {
+        process.registerNode(this);
+    }
 
     @Override
     public String id() {

@@ -27,6 +27,11 @@ public class SubProcess extends IdBasedElement implements Node {
         }
     }
 
+    @ElementInit
+    public void registerToProcess() {
+        process.registerNode(this);
+    }
+
     public StartEvent getStartEvent() {
         return startEventList.get(0);
     }

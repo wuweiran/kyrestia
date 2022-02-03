@@ -5,19 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 public class ExecutionPointPO {
-    Integer status;
+    String status;
     String currentNodeId;
-    Integer currentNodeStage;
+    String currentNodeStage;
     List<ExecutionPointPO> subExecutionPoints;
     Map<String, Serializable> localContext;
     String waitEvent;
     Boolean isWaitingBereaved;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -29,11 +29,11 @@ public class ExecutionPointPO {
         this.currentNodeId = currentNodeId;
     }
 
-    public Integer getCurrentNodeStage() {
+    public String getCurrentNodeStage() {
         return currentNodeStage;
     }
 
-    public void setCurrentNodeStage(Integer currentNodeStage) {
+    public void setCurrentNodeStage(String currentNodeStage) {
         this.currentNodeStage = currentNodeStage;
     }
 
@@ -72,9 +72,9 @@ public class ExecutionPointPO {
     @Override
     public String toString() {
         return "ExecutionPointPO{" +
-                "status=" + status +
+                "status='" + status + '\'' +
                 ", currentNodeId='" + currentNodeId + '\'' +
-                ", currentNodeStage=" + currentNodeStage +
+                ", currentNodeStage='" + currentNodeStage + '\'' +
                 ", subExecutionPoints=" + subExecutionPoints +
                 ", localContext=" + localContext +
                 ", waitEvent='" + waitEvent + '\'' +

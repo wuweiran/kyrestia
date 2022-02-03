@@ -4,7 +4,7 @@ public class ExecutionPO {
     String id;
     String processId;
     ExecutionPointPO mainExecutionPoint;
-    Integer status;
+    String status;
 
     public String getId() {
         return id;
@@ -30,11 +30,11 @@ public class ExecutionPO {
         this.mainExecutionPoint = mainExecutionPoint;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -44,7 +44,7 @@ public class ExecutionPO {
                 "id='" + id + '\'' +
                 ", processId='" + processId + '\'' +
                 ", mainExecutionPoint=" + mainExecutionPoint +
-                ", status=" + status +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

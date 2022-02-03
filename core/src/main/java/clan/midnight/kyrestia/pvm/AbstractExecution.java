@@ -24,7 +24,18 @@ public abstract class AbstractExecution implements Execution {
         this.atSafePoint = true;
     }
 
+    protected AbstractExecution(String id, Process process,
+                                AbstractExecutionPoint.MetaContainer mainEpMetaContainer, Status status) {
+        this.id = id;
+        this.process = process;
+        this.mainEp = newMainExecutionPoint(mainEpMetaContainer);
+        this.status = status;
+        this.atSafePoint = true;
+    }
+
     protected abstract AbstractExecutionPoint newMainExecutionPoint();
+
+    protected abstract AbstractExecutionPoint newMainExecutionPoint(AbstractExecutionPoint.MetaContainer metaContainer);
 
     @Override
     public String id() {
@@ -100,5 +111,9 @@ public abstract class AbstractExecution implements Execution {
 
     void markTerminated() {
         status = Status.TERMINATED;
+    }
+
+    public AbstractExecutionPoint mainEp() {
+        return mainEp;
     }
 }

@@ -44,6 +44,11 @@ public class ReceiveTask extends IdBasedElement implements Node {
     }
 
     @ElementInit
+    public void registerToProcess() {
+        process.registerNode(this);
+    }
+
+    @ElementInit
     public void checkAndInitializeDelegation() {
         if (smartClass != null) {
             Object delegationObject = Configuration.implementationAccessor.access(smartClass);

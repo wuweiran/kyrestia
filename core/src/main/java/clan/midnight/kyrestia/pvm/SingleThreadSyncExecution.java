@@ -10,19 +10,30 @@ import java.util.Map;
 public class SingleThreadSyncExecution extends AbstractExecution {
     private Map<String, Serializable> parameters;
 
-    public SingleThreadSyncExecution(String id, Process process) {
+    SingleThreadSyncExecution(String id, Process process) {
         super(id, process);
         this.parameters = Collections.emptyMap();
     }
 
-    public SingleThreadSyncExecution(String id, Process process, Map<String, Serializable> parameters) {
+    SingleThreadSyncExecution(String id, Process process, Map<String, Serializable> parameters) {
         this(id, process);
         this.parameters = parameters;
+    }
+
+    SingleThreadSyncExecution(String id, Process process,
+                                     AbstractExecutionPoint.MetaContainer metaContainer, Status status) {
+        super(id, process, metaContainer, status);
+        this.parameters = Collections.emptyMap();
     }
 
     @Override
     protected AbstractExecutionPoint newMainExecutionPoint() {
         return new SingleThreadSyncExecutionPoint(this, parameters);
+    }
+
+    @Override
+    protected AbstractExecutionPoint newMainExecutionPoint(AbstractExecutionPoint.MetaContainer metaContainer) {
+        return new SingleThreadSyncExecutionPoint(this, metaContainer);
     }
 
     public static class SingleThreadSyncExecutionPoint extends AbstractExecutionPoint {
@@ -32,6 +43,14 @@ public class SingleThreadSyncExecution extends AbstractExecution {
 
         SingleThreadSyncExecutionPoint(AbstractExecutionPoint supEp, Node node) {
             super(supEp, node);
+        }
+
+        SingleThreadSyncExecutionPoint(AbstractExecution execution, MetaContainer metaContainer) {
+            super(execution, metaContainer);
+        }
+
+        SingleThreadSyncExecutionPoint(AbstractExecutionPoint supEp, MetaContainer metaContainer) {
+            super(supEp, metaContainer);
         }
 
         @Override

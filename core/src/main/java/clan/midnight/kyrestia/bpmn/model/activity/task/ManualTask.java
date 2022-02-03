@@ -31,6 +31,11 @@ public class ManualTask extends IdBasedElement implements Node {
         }
     }
 
+    @ElementInit
+    public void registerToProcess() {
+        process.registerNode(this);
+    }
+
     public SequenceFlow getOutgoingSequenceFlow() {
         return outGoingSequenceFlowList.get(0);
     }

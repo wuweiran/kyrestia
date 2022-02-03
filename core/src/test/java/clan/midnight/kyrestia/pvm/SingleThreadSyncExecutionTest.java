@@ -11,17 +11,7 @@ class SingleThreadSyncExecutionTest {
     @Test
     void testSingleNodeProcess() {
         NonReentrantNode n0 = new NonReentrantNode(null);
-        Process process = new Process() {
-            @Override
-            public String id() {
-                return "test_process";
-            }
-
-            @Override
-            public Node startNode() {
-                return n0;
-            }
-        };
+        Process process = new TestProcess(n0);
         Execution execution = new SingleThreadSyncExecution("test_execution", process);
 
         execution.run();
@@ -37,17 +27,7 @@ class SingleThreadSyncExecutionTest {
         NonReentrantNode n2 = new NonReentrantNode(n3);
         NonReentrantNode n1 = new NonReentrantNode(n2);
         NonReentrantNode n0 = new NonReentrantNode(n1);
-        Process process = new Process() {
-            @Override
-            public String id() {
-                return "test_process";
-            }
-
-            @Override
-            public Node startNode() {
-                return n0;
-            }
-        };
+        Process process = new TestProcess(n0);
         Execution execution = new SingleThreadSyncExecution("test_execution", process);
 
         execution.run();
@@ -63,17 +43,7 @@ class SingleThreadSyncExecutionTest {
     @Test
     void testSingleNodeBlockOnExecutingProcess() {
         NonReentrantNode n0 = new BlockOnExecutingNrNode("TEST_STR_0",null);
-        Process process = new Process() {
-            @Override
-            public String id() {
-                return "test_process";
-            }
-
-            @Override
-            public Node startNode() {
-                return n0;
-            }
-        };
+        Process process = new TestProcess(n0);
         Execution execution = new SingleThreadSyncExecution("test_execution", process);
 
         execution.run();
@@ -96,17 +66,7 @@ class SingleThreadSyncExecutionTest {
         NonReentrantNode n2 = new NonReentrantNode(null);
         NonReentrantNode n1 = new NonReentrantNode(null);
         ShatterNode n0 = new ShatterNode(n1, n2, n30);
-        Process process = new Process() {
-            @Override
-            public String id() {
-                return "test_process";
-            }
-
-            @Override
-            public Node startNode() {
-                return n0;
-            }
-        };
+        Process process = new TestProcess(n0);
         Execution execution = new SingleThreadSyncExecution("test_execution", process);
 
         execution.run();
@@ -125,17 +85,7 @@ class SingleThreadSyncExecutionTest {
         NonReentrantNode n2 = new BlockOnExecutingNrNode("TEST_STR_0",null);
         NonReentrantNode n1 = new BlockOnExecutingNrNode("TEST_STR_0",null);
         ShatterNode n0 = new ShatterNode(n1, n2, n30);
-        Process process = new Process() {
-            @Override
-            public String id() {
-                return "test_process";
-            }
-
-            @Override
-            public Node startNode() {
-                return n0;
-            }
-        };
+        Process process = new TestProcess(n0);
         Execution execution = new SingleThreadSyncExecution("test_execution", process);
 
         execution.run();
