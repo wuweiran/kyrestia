@@ -31,7 +31,7 @@ Kyrestia can be integrated into large-scale web applications and microservices t
 ```
 
 #### Sample Code Snippet
-Define process and execute
+Define BPMN process and execute
 ```java
 KyrestiaEngine engine = new KyrestiaEngine();
 InputStream inputStream = Thread.currentThread().getContextClassLoader()
@@ -47,11 +47,12 @@ Persist execution
 // create the persistence object from an execution
 ExecutionPO executionPO = engine.convertExecutionForPersistence(execution);
 // restore from an persistence object
-execution = engine.restore(execution);
+execution = engine.restore(executionPO);
 execution.proceed();
 ```
 
 #### Integration with Spring
+Config Kyrestia engine
 ```java
 @Configuration
 public class YourConfiguration {
@@ -75,7 +76,16 @@ public class YourConfiguration {
     }
 }
 ```
-
+Delegate BPMN task
+```java
+@Component
+public class DelegationTest implements Delegation {
+    @Override
+    public void execute(DelegationContext context) {
+        // business logic
+    }
+}
+```
 ## Acknowledgement
 
 Inspired by Alibaba's SmartEngine
