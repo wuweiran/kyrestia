@@ -1,2 +1,7 @@
+# Editor directories and files
+.vscode/*
+.idea
+.DS_Store
+
 # Project exclude paths
-/core/target/
+target/
